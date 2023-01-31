@@ -6,13 +6,21 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] AudioSource theMusic;
     public bool startPlaying;
-    [SerializeField] BeatScroller theBS; 
+    [SerializeField] BeatScroller theBS;
+    public float beatTempo;
+    public float noteSpeed;
+
+    public float TravelTime = 5f;
 
     public static GameManager instance;
 
     void Start()
     {
         instance = this;
+        noteSpeed = beatTempo / 60f;
+
+        float travelRatio = 120f / beatTempo;
+        TravelTime *= travelRatio;
     }
 
     void Update()
@@ -21,7 +29,7 @@ public class GameManager : MonoBehaviour
             if (Input.anyKeyDown) {
                 if (Input.GetKeyDown(KeyCode.Escape)) return;
                 startPlaying = true;
-                theBS.hasStarted = true;
+                //theBS.hasStarted = true;
 
                 theMusic.Play();
             }
