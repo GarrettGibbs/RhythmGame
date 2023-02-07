@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -13,6 +15,9 @@ public class GameManager : MonoBehaviour
     public float TravelTime = 5f;
 
     public static GameManager instance;
+
+    [SerializeField] TMP_Text timeText;
+    private float timeInSong;
 
     void Start()
     {
@@ -31,9 +36,24 @@ public class GameManager : MonoBehaviour
                 startPlaying = true;
                 //theBS.hasStarted = true;
 
+                StartSong();
+            }
+        } else {
+            timeInSong += Time.deltaTime;
+            timeText.text = timeInSong.ToString();
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                Time.timeScale = 0f;
+                theMusic.Pause();
+            } else if (Input.GetKeyDown(KeyCode.Return)) {
+                Time.timeScale = 1f;
                 theMusic.Play();
             }
         }
+    }
+
+    private async void StartSong() {
+        await Task.Delay(6380);
+        theMusic.Play();
     }
 
     public void NoteHit() {
